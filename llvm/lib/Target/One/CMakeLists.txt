@@ -8,6 +8,9 @@ add_llvm_target(OneCodeGen
   OneInfo
   OneDesc
   Support
+  CodeGen
+  TargetParser
+  Target
   )
 
 add_subdirectory(TargetInfo)
