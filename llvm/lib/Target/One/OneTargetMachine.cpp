@@ -47,5 +47,5 @@ OneTargetMachine::OneTargetMachine(const Target &T, const Triple &TT, StringRef 
                         getEffectiveRelocModel(TT, RM),
                         getEffectiveCodeModel(CM, CodeModel::Small), OL),
                         TLOF(std::unique_ptr<TargetLoweringObjectFileELF>()) {
-    
+    initAsmInfo();
 }
