@@ -3,6 +3,8 @@
 
 #include "OneInstrInfo.h"
 #include "OneRegisterInfo.h"
+#include "OneFrameLowering.h"
+#include "OneISelLowering.h"
 #include "llvm/CodeGen/SelectionDAGTargetInfo.h"
 
 #define GET_SUBTARGETINFO_HEADER
@@ -14,12 +16,18 @@ class OneSubtarget : public OneGenSubtargetInfo {
 private:
     OneInstrInfo InstrInfo;
     OneRegisterInfo RegInfo;
+    OneFrameLowering FrameLowering;
+    OneTargetLowering TLInfo;
 public:
-    OneSubtarget(const Triple &&TT,
+    OneSubtarget(const Triple &TT,
                  StringRef CPU, StringRef FS, const TargetMachine &TM);
     OneSubtarget &initializeSubtargetDependencies(StringRef CPU, StringRef FS, const TargetMachine &TM);
     const OneInstrInfo *getInstrInfo() const override { return &InstrInfo; }
     const OneRegisterInfo *getRegisterInfo() const override { return &RegInfo; }
+    const OneFrameLowering *getFrameLowering() const override { return &FrameLowering; }
+    const OneTargetLowering *getTargetLowering() const override { return &TLInfo; }
+
+    void ParseSubtargetFeatures(StringRef CPU, StringRef TuneCPU, StringRef FS);
 };
 }
 

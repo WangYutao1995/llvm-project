@@ -17,6 +17,8 @@ add_llvm_target(OneCodeGen
   OneInstrInfo.cpp
   OneRegisterInfo.cpp
   OneSubtarget.cpp
+  OneFrameLowering.cpp
+  OneISelLowering.cpp
 
   LINK_COMPONENTS
   AsmPrinter

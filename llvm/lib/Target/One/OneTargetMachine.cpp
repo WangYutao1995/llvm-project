@@ -46,6 +46,6 @@ OneTargetMachine::OneTargetMachine(const Target &T, const Triple &TT, StringRef 
     : CodeGenTargetMachineImpl(T, computeDataLayout(TT, Options), TT, CPU, FS, Options,
                         getEffectiveRelocModel(TT, RM),
                         getEffectiveCodeModel(CM, CodeModel::Small), OL),
-                        TLOF(std::unique_ptr<TargetLoweringObjectFileELF>()) {
+                        TLOF(std::unique_ptr<TargetLoweringObjectFileELF>()), Subtarget(TT, CPU, FS, *this) {
     initAsmInfo();
 }

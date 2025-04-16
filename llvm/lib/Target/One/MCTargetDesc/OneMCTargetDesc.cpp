@@ -6,6 +6,10 @@
 #include "OneRegisterInfo.h"
 #include "OneSubtarget.h"
 
+#include "llvm/MC/MCInstrInfo.h"
+#include "llvm/MC/MCRegisterInfo.h"
+#include "llvm/MC/MCSubtargetInfo.h"
+
 using namespace llvm;
 
 #define GET_INSTRINFO_MC_DESC
@@ -24,13 +28,13 @@ static MCAsmInfo *createOneMCAsmInfo(const MCRegisterInfo &MRI,
 }
 
 static MCRegisterInfo *createOneMCRegisterInfo(const Triple &TT) {
-    MCRegisterInfo *X = new OneRegisterInfo();
+    MCRegisterInfo *X = new MCRegisterInfo();
     InitOneMCRegisterInfo(X, One::X1);
     return X;
 }
 
 static MCInstrInfo *createOneMCInstrInfo() {
-    MCInstrInfo *X = new OneInstrInfo();
+    MCInstrInfo *X = new MCInstrInfo();
     InitOneMCInstrInfo(X);
     return X;
 }

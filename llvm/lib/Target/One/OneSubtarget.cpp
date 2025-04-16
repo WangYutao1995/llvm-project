@@ -2,13 +2,15 @@
 
 using namespace llvm;
 
+#define DEBUG_TYPE "One-Subtarget"
+
 #define GET_SUBTARGETINFO_TARGET_DESC
 #define GET_SUBTARGETINFO_CTOR
 #include "OneGenSubtargetInfo.inc"
 
-OneSubtarget::OneSubtarget(const Triple &&TT,
+OneSubtarget::OneSubtarget(const Triple &TT,
              StringRef CPU, StringRef FS, const TargetMachine &TM)
-    : OneGenSubtargetInfo(TT, CPU, CPU, FS) {
+    : OneGenSubtargetInfo(TT, CPU, CPU, FS), FrameLowering(*this), TLInfo(TM, *this) {
                 
 }
 
