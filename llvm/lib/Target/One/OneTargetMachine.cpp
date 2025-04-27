@@ -2,6 +2,8 @@
 #include "llvm/MC/TargetRegistry.h"
 #include "TargetInfo/OneTargetInfo.h"
 #include "llvm/CodeGen/TargetLoweringObjectFileImpl.h"
+#include "llvm/CodeGen/TargetPassConfig.h"
+#include "One.h"
 
 using namespace llvm;
 
@@ -29,6 +31,8 @@ using namespace llvm;
 // };
 extern "C" LLVM_EXTERNAL_VISIBILITY void LLVMInitializeOneTarget() {
     RegisterTargetMachine<OneTargetMachine> X(getTheOneTarget());
+    auto *PR = PassRegistry::getPassRegistry();
+    initializeOneDAGToDAGISelLegacyPass(*PR);
 }
 
 static StringRef computeDataLayout(const Triple &TT, const TargetOptions &options) {
@@ -48,4 +52,32 @@ OneTargetMachine::OneTargetMachine(const Target &T, const Triple &TT, StringRef 
                         getEffectiveCodeModel(CM, CodeModel::Small), OL),
                         TLOF(std::unique_ptr<TargetLoweringObjectFileELF>()), Subtarget(TT, CPU, FS, *this) {
     initAsmInfo();
+}
+
+namespace {
+class OnePassConfig : public TargetPassConfig {
+public:
+    OnePassConfig(OneTargetMachine &TM, PassManagerBase &PM)
+        : TargetPassConfig(TM, PM) {}
+
+    OneTargetMachine &getOneTargetMachine() const {
+        return getTM<OneTargetMachine>();
+    }
+
+    const OneSubtarget &getOneSubtarget() const {
+        return *getOneTargetMachine().getSubtargetImpl();
+    }
+
+    bool addInstSelector() override;
+};
+} // namespace
+
+TargetPassConfig *OneTargetMachine::createPassConfig(PassManagerBase &PM) {
+    return new OnePassConfig(*this, PM);
+}
+
+bool OnePassConfig::addInstSelector() {
+    // Install an instruction selector.
+    addPass(createOneISelDag(getOneTargetMachine()));
+    return false;
 }

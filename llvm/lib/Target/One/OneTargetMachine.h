@@ -19,6 +19,9 @@ public:
     TargetLoweringObjectFile *getObjFileLowering() const override {
         return TLOF.get();
     }
+
+    // Pass Pipeline Configuration
+    TargetPassConfig *createPassConfig(PassManagerBase &PM) override;
 };
 }
 
