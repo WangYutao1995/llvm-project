@@ -1206,7 +1206,7 @@ StringRef ELFObjectFile<ELFT>::getFileFormatName() const {
       return "elf32-hexagon";
     case ELF::EM_LANAI:
       return "elf32-lanai";
-    case ELF::88K:
+    case ELF::EM_88K:
       return "elf32-m88k";
     case ELF::EM_MIPS:
       return "elf32-mips";
