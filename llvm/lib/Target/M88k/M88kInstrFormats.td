@@ -44,7 +44,7 @@ class F_L<dag outs, dag ins, string asm, string operands,
 // Format: Logical with triadic register.
 class F_LR<bits<5> func, bits<1> comp, string asm, list<dag> pattern = []>
   : F_L<(outs GPROpnd:$rd), (ins GPROpnd:$rs1, GPROpnd:$rs2),
-        !if(comp, !strconcat(asm, ".c"), asm), "$rd $rs1 $rs2", pattern> {
+        !if(comp, !strconcat(asm, ".c"), asm), "$rd, $rs1, $rs2", pattern> {
   bits<5> rs2;
   let Inst{31-26} = 0b111101;
   let Inst{15-11} = func;
